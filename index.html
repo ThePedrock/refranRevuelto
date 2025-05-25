@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <title>A refran revuelto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1 class="page-title">A refrán revuelto...</h1>
+  </header>
+
+  <div class="container">
+    <div class="shareIcon">
+      <i class="fas fa-share-alt share-icon"></i>
+    </div>
+    <div id="proverb">Cargando refrán...</div>
+    <div class="containerButtons">
+      <div class="containerButton" id="another-proverb" onclick="newProverb()">Otro refrán</div>
+      <div class="containerButton" id="shuffle-proverb" onclick="shuffleProverb()">Remezclar refrán</div>
+      <div class="containerButton" id="total-shuffle" onclick="totalShuffle()">Sorpréndeme</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
