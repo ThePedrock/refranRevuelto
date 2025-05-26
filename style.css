@@ -39,6 +39,12 @@ body {
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
 }
 
+@media (orientation: portrait) {
+  .page-title {
+    font-size: 3rem;
+  }
+}
+
 /* Main container */
 .container {
   display: flex;
@@ -105,6 +111,13 @@ body {
     font-weight: bold;
     transition: background-color 0.2s, color 0.2s ease;
     color: gray;
+}
+
+@media (orientation: portrait) {
+  .containerButton {
+    font-size: 1rem;
+    font-weight: bold;
+  }
 }
 
 .containerButton:hover {
