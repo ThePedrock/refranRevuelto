@@ -998,15 +998,19 @@ function processProverbId(number) {
   }
 }
 
+function findProverbById(anId) {
+    return proverbs.find(proverb => proverb.id === anId) || undefined;
+}
+
 function displayProverb(id, firstId, secondId) {
-  var proverb = proverbs[id];
+  var proverb = (id !== undefined) ? findProverbById(id) : 0;
   var shuffledProverb01 = undefined;
   var shuffledProverb02 = undefined;
   if (firstId === undefined || secondId === undefined) {
     document.getElementById('proverb').textContent = `${proverb.firstPart} ${proverb.secondPart}`;
   } else {
-    shuffledProverb01 = proverbs[firstId];
-    shuffledProverb02 = proverbs[secondId];
+    shuffledProverb01 = (firstId !== undefined) ? findProverbById(firstId) : 0;
+    shuffledProverb02 = (secondId !== undefined) ? findProverbById(secondId) : 0;
     document.getElementById('proverb').textContent = `${shuffledProverb01.firstPart} ${shuffledProverb02.secondPart}`;    
   }
 }
@@ -1039,12 +1043,12 @@ function shuffleProverb() {
 
   switch(Math.floor(Math.random() * 2)) {
     case 0:
-      first = proverbs[firstIndex];
-      second = proverbs[secondIndex];
+      first = (firstIndex !== undefined) ? findProverbById(firstIndex) : 0;
+      second = (secondIndex !== undefined) ? findProverbById(secondIndex) : 0;
       break;
     case 1:
-      first = proverbs[secondIndex];
-      second = proverbs[firstIndex];
+      first = (secondIndex !== undefined) ? findProverbById(secondIndex) : 0;
+      second = (firstIndex !== undefined) ? findProverbById(firstIndex) : 0;
       break;
   }
 
@@ -1068,8 +1072,9 @@ function totalShuffle() {
   }
 
   // Elegir dos refranes distintos
-  let firstIndex = Math.floor(Math.random() * proverbs.length);
-  let secondIndex;
+  selectedId = Math.floor(Math.random() * proverbs.length);
+  firstIndex = selectedId;
+  secondIndex;
 
   do {
     secondIndex = Math.floor(Math.random() * proverbs.length);
@@ -1080,12 +1085,12 @@ function totalShuffle() {
 
   switch(Math.floor(Math.random() * 2)) {
     case 0:
-      first = proverbs[firstIndex];
-      second = proverbs[secondIndex];
+      first = (firstIndex !== undefined) ? findProverbById(firstIndex) : 0;
+      second = (secondIndex !== undefined) ? findProverbById(secondIndex) : 0;
       break;
     case 1:
-      first = proverbs[secondIndex];
-      second = proverbs[firstIndex];
+      first = (secondIndex !== undefined) ? findProverbById(secondIndex) : 0;
+      second = (firstIndex !== undefined) ? findProverbById(firstIndex) : 0;
       break;
   }
 
