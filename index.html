@@ -14,14 +14,23 @@
   </header>
 
   <div class="container">
+    <div class="refresh">
+      <i class="fas fa-sync refresh-icon" id="another-proverb" onclick="newProverb()"></i>
+    </div>
     <!-- <div class="shareIcon">
       <i class="fas fa-share-alt share-icon"></i>
     </div> --> <!-- Aún no implementado -->
     <div id="proverb">Cargando refrán...</div>
     <div class="containerButtons">
-      <div class="containerButton" id="another-proverb" onclick="newProverb()">Otro refrán</div>
-      <div class="containerButton" id="shuffle-proverb" onclick="shuffleProverb()">Remezclar refrán</div>
-      <div class="containerButton" id="total-shuffle" onclick="totalShuffle()">Sorpréndeme</div>
+      <!-- <div class="containerButton" id="another-proverb" onclick="newProverb()">Otro refrán</div> -->
+      <div class="containerButton" id="shuffle-proverb" onclick="shuffleProverb()">
+        <i class="fa-solid fa-wand-magic" onclick="shuffleProverb()"></i>
+        Mezcla
+      </div>
+      <div class="containerButton" id="total-shuffle" onclick="totalShuffle()">
+        <i class="fa-solid fa-wand-magic-sparkles" onclick="totalShuffle()"></i>
+        Remezcla
+      </div>
     </div>
   </div>
 

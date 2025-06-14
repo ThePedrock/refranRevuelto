@@ -1,3 +1,20 @@
+:root {
+  /* Paleta de colores */
+  --color-primary: #87d08a;
+  --color-secondary: #1a6c1e;
+  --color-light: #F0F0F0;
+  --color-dark: #333333;
+  --color-gray: gray;
+  --color-background: white;
+
+  /* Sombras */
+  --shadow-dark: rgba(0, 0, 0, 0.25);
+  --shadow-text: rgba(0, 0, 0, 0.7);
+
+  /* Otros */
+  --gradient-direction: 45deg;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -11,7 +28,7 @@ body {
   text-align: center;
   overflow: hidden;
 
-  background: linear-gradient(45deg, #87d08a, #1a6c1e);
+  background: linear-gradient(var(--gradient-direction), var(--color-primary), var(--color-secondary));
   background-size: 200% 200%;
   animation: gradientAnimation 3s infinite alternate;
 }
@@ -32,11 +49,11 @@ body {
 .page-title {
     font-family: fantasy;
     font-size: 4rem;
-    color: #F0F0F0;
+    color: var(--color-light);
     text-align: center;
     margin: 20px 0;
-    -webkit-text-stroke: 2px #333333;
-    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    -webkit-text-stroke: 2px var(--color-dark);
+    text-shadow: 3px 3px 5px var(--shadow-text);
 }
 
 @media (orientation: portrait) {
@@ -56,10 +73,29 @@ body {
   border-radius: 10px;
   width: 80%;
   max-width: 600px;
-  background-color: white; /* Blanco para diferenciar el contenedor */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  background-color: var(--color-background); /* Blanco para diferenciar el contenedor */
+  box-shadow: 0px 4px 10px var(--shadow-dark);
   opacity: 0.9; /* Ligera transparencia para ver el fondo animado */
   position: relative;
+}
+
+.refresh {
+    padding: 10px;
+}
+
+.refresh-icon {
+    position: absolute; /* Posición absoluta dentro del contenedor */
+    top: 10px; /* Distancia desde arriba */
+    left: 10px; /* Distancia desde la derecha */
+    font-size: 1.5rem; /* Tamaño del ícono */
+    color: var(--color-dark); /* Color principal del ícono (negro) */
+    cursor: pointer; /* Cambia el cursor al pasar encima */
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Efecto suave */
+}
+
+.refresh-icon:hover {
+    transform: scale(1.2); /* Aumenta ligeramente el tamaño */
+    color: var(--color-secondary); /* Oscurece el color en hover */
 }
 
 .shareIcon {
@@ -71,14 +107,14 @@ body {
     top: 10px; /* Distancia desde arriba */
     right: 10px; /* Distancia desde la derecha */
     font-size: 1.5rem; /* Tamaño del ícono */
-    color: #000000; /* Color principal del ícono (negro) */
+    color: var(--color-dark); /* Color principal del ícono (negro) */
     cursor: pointer; /* Cambia el cursor al pasar encima */
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Efecto suave */
 }
 
 .share-icon:hover {
     transform: scale(1.2); /* Aumenta ligeramente el tamaño */
-    color: #1a6c1e; /* Oscurece el color en hover */
+    color: var(--color-secondary); /* Oscurece el color en hover */
 }
 
 #proverb {
@@ -110,7 +146,7 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     transition: background-color 0.2s, color 0.2s ease;
-    color: gray;
+    color: var(--color-gray);
 }
 
 @media (orientation: portrait) {
