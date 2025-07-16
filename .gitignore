@@ -1,2 +1,5 @@
 # Ignorar el directorio de configuración de IntelliJ IDEA
 .idea/
+node_modules/
+.env.local
+.vercel

@@ -47,7 +47,7 @@ body {
 }
 
 .page-title {
-    font-family: fantasy;
+    font-family: 'Helvetica';
     font-size: 4rem;
     color: var(--color-light);
     text-align: center;
@@ -103,9 +103,9 @@ body {
 }
 
 .share-icon {
-    position: absolute; /* Posición absoluta dentro del contenedor */
-    top: 10px; /* Distancia desde arriba */
-    right: 10px; /* Distancia desde la derecha */
+    /* position: absolute; /* Posición absoluta dentro del contenedor */
+    /* top: 10px; /* Distancia desde arriba */
+    /* right: 10px; /* Distancia desde la derecha */
     font-size: 1.5rem; /* Tamaño del ícono */
     color: var(--color-dark); /* Color principal del ícono (negro) */
     cursor: pointer; /* Cambia el cursor al pasar encima */
@@ -121,7 +121,7 @@ body {
   padding: 20px;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   word-wrap: break-word;
 }
 
@@ -136,12 +136,25 @@ body {
     width: 100%;
 }
 
+.containerRefreshButton {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 10%;
+    height: 5vh;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s ease;
+    color: var(--color-gray);
+}
+
 .containerButton {
     display: flex;
     justify-content: center;
     text-align: center;
     align-items: center;
-    width: 50%;
+    width: 45%;
     height: 5vh;
     font-size: 1.2rem;
     font-weight: bold;
@@ -174,4 +187,87 @@ body {
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE10+ */
   user-select: none;         /* estándar */
+}
+
+.loaded {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.loading.hidden {
+  display: none;
+}
+
+.loading .refresh-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Accordion */
+
+.accordion {
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.accordion-header {
+  padding: 10px;
+  background-color: #ececec;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.accordion-icon {
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion.active .accordion-content {
+  max-height: 200px; /* Ajusta este valor según el contenido */
+}
+
+.inner-container {
+  padding: 15px;
+  background-color: #f4f4f4;
+}
+
+.inner-container dt {
+    font-size: 1.3em;  /* Texto ligeramente más grande */
+    font-style: italic; /* Cursiva */
+}
+
+.inner-container dd {
+    font-weight: bold;  /* Negrita */
+    font-size: 1em;    /* Mantiene el tamaño original */
 }

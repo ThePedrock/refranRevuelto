@@ -14,22 +14,39 @@
   </header>
 
   <div class="container">
-    <div class="refresh">
-      <i class="fas fa-sync refresh-icon" id="another-proverb" onclick="newProverb()"></i>
+    <!-- <div id="refreshIcon" class="loaded">
+      <i class="fas fa-sync refresh-icon" id="another-proverb" onclick="hl_newProverb()"></i>
     </div>
-    <!-- <div class="shareIcon">
+    <div class="shareIcon">
       <i class="fas fa-share-alt share-icon"></i>
     </div> --> <!-- Aún no implementado -->
-    <div id="proverb">Cargando refrán...</div>
+    <!-- <div id="proverb">Cargando refrán...</div> -->
     <div class="containerButtons">
+      <div class="containerRefreshButton">
+        <div id="refreshIcon" class="loaded">
+          <i class="fas fa-sync refresh-icon" id="another-proverb" onclick="hl_newProverb()"></i>
+        </div>
+      </div>
       <!-- <div class="containerButton" id="another-proverb" onclick="newProverb()">Otro refrán</div> -->
-      <div class="containerButton" id="shuffle-proverb" onclick="shuffleProverb()">
-        <i class="fa-solid fa-wand-magic" onclick="shuffleProverb()"></i>
+      <div class="containerButton" id="shuffle-proverb" onclick="hl_shuffleProverb()">
+        <i class="fa-solid fa-wand-magic" onclick="hl_shuffleProverb()"></i>
         Mezcla
       </div>
-      <div class="containerButton" id="total-shuffle" onclick="totalShuffle()">
-        <i class="fa-solid fa-wand-magic-sparkles" onclick="totalShuffle()"></i>
+      <div class="containerButton" id="total-shuffle" onclick="hl_totalShuffle()">
+        <i class="fa-solid fa-wand-magic-sparkles" onclick="hl_totalShuffle()"></i>
         Remezcla
+      </div>
+    </div>
+    <div id="proverb">Cargando refrán...</div>
+    <div class="accordion">
+      <div class="accordion-header">
+        <span class="accordion-icon">△</span>
+        Significado
+      </div>
+      <div class="accordion-content">
+        <div id="meaning-list" class="inner-container">
+          Este es el contenido que se puede plegar y desplegar
+        </div>
       </div>
     </div>
   </div>

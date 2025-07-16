@@ -953,6 +953,8 @@ var selectedId = undefined;
 var firstIndex = undefined;
 var secondIndex = undefined;
 
+var idList = undefined;
+
 async function loadProverbs() {
   try {
     displayProverb();
@@ -1106,6 +1108,11 @@ function totalShuffle() {
   displayProverb(selectedId, first.id, second.id);
 }
 
+function updateProverbText(text) {
+    const proverbElement = document.getElementById('proverb');
+    proverbElement.textContent = text;
+}
+
 function getPathName() {
   const params = new URLSearchParams(window.location.search);
   const valor = params.get("proverb");
@@ -1117,5 +1124,341 @@ function getPathName() {
   }
 }
 
+async function getProverbList() {
+  try {
+    const response = await fetch('/api/proverb/list')
+    const data = await response.json()
+
+    if (response.ok) {
+      console.log('Conexión exitosa:', data)
+      //alert('Conexión exitosa con Supabase!')
+      return data;
+    } else {
+      console.error('Error:', data)
+      //alert('Error al conectar con Supabase')
+      return undefined;
+    }
+  } catch (error) {
+    console.error('Error:', error)
+    //alert('Error al realizar la prueba de conexión')
+    return undefined;
+  }
+}
+
+async function getProverbById(id) {
+  try {
+    if (!id) {
+      throw new Error('Se requiere un ID')
+    }
+
+    const response = await fetch(`/api/proverb/${id}`)
+    const data = await response.json()
+
+    if (response.ok) {
+      console.log('Refrán obtenido:', data)
+      return data
+    } else {
+      console.error('Error:', data.error || 'Error desconocido')
+      throw new Error(data.error || 'Error al obtener el refrán')
+    }
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+async function getProverbIDList() {
+  try {
+    const response = await fetch('/api/proverb/listid')
+    const data = await response.json()
+
+    if (response.ok) {
+      console.log('Listado IDs obtenido:', data)
+      return data
+    } else {
+      console.error('Error:', data.error || 'Error desconocido')
+      throw new Error(data.error || 'Error al obtener listado IDs')
+    }
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+//// LIGHT LOADING (SLOW) ////
+
+async function ll_initialFunction() {
+  idList = await ll_loadProverbIdList();
+  await ll_newProverb();
+}
+
+async function ll_loadProverbIdList() {
+  setRefreshIconLoading(true);
+  var result = await getProverbIDList();
+  setRefreshIconLoading(false);
+  return result;
+}
+
+async function ll_newProverb() {
+  if (idList.length === 0) return;
+  selectedId = idList[Math.floor(Math.random() * idList.length)].id;
+  firstIndex = undefined;
+  secondIndex = undefined;
+  setRefreshIconLoading(true);
+  await ll_displayProverb(selectedId, firstIndex, secondIndex);
+  setRefreshIconLoading(false);
+}
+
+async function ll_shuffleProverb() {
+  const maxrange = 1000
+
+  if (idList.length < 2) {
+    console.log("El array debe tener al menos 2 elementos.");
+    return;
+  }
+
+  let firstIndex = selectedId;
+  let secondIndex;
+
+  do {
+    secondIndex = Math.floor(Math.random() * idList.length);
+  } while (secondIndex === firstIndex);
+
+  var first;
+  var second;
+
+  switch(Math.floor(Math.random() * 2)) {
+    case 0:
+      first = (firstIndex !== undefined) ? idList[firstIndex] : 0;
+      second = (secondIndex !== undefined) ? idList[secondIndex] : 0;
+      break;
+    case 1:
+      first = (secondIndex !== undefined) ? idList[secondIndex] : 0;
+      second = (firstIndex !== undefined) ? idList[firstIndex] : 0;
+      break;
+  }
+
+  setRefreshIconLoading(true);
+  await ll_displayProverb(selectedId, first.id, second.id);
+  setRefreshIconLoading(false);
+}
+
+async function ll_totalShuffle() {
+  const maxrange = 1000
+
+  if (idList.length < 2) {
+    console.log("El array debe tener al menos 2 elementos.");
+    return;
+  }
+
+  // Elegir dos refranes distintos
+  selectedId = Math.floor(Math.random() * idList.length);
+  firstIndex = selectedId;
+  secondIndex;
+
+  do {
+    secondIndex = Math.floor(Math.random() * idList.length);
+  } while (secondIndex === firstIndex);
+
+  var first;
+  var second;
+
+  switch(Math.floor(Math.random() * 2)) {
+    case 0:
+      first = (firstIndex !== undefined) ? idList[firstIndex] : 0;
+      second = (secondIndex !== undefined) ? idList[secondIndex] : 0;
+      break;
+    case 1:
+      first = (secondIndex !== undefined) ? idList[secondIndex] : 0;
+      second = (firstIndex !== undefined) ? idList[firstIndex] : 0;
+      break;
+  }
+
+  setRefreshIconLoading(true);
+  await ll_displayProverb(selectedId, first.id, second.id);
+  setRefreshIconLoading(false);
+}
+
+async function ll_displayProverb(id, firstId, secondId) {
+  var proverb = (id !== undefined) ? await getProverbById(id) : 0;
+  var shuffledProverb01 = undefined;
+  var shuffledProverb02 = undefined;
+  if (firstId === undefined || secondId === undefined) {
+    document.getElementById('proverb').textContent = `${proverb.first_part} ${proverb.second_part}`;
+  } else {
+    shuffledProverb01 = (firstId !== undefined) ? await getProverbById(firstId) : 0;
+    shuffledProverb02 = (secondId !== undefined) ? await getProverbById(secondId) : 0;
+    document.getElementById('proverb').textContent = `${shuffledProverb01.first_part} ${shuffledProverb02.second_part}`;    
+  }
+}
+
+function setRefreshIconLoading(isLoading) {
+    const refreshIcon = document.getElementById('refreshIcon');
+
+    refreshIcon.className = '';
+
+    if (isLoading) {
+        refreshIcon.classList.add('loading');
+        updateProverbText('Cargando refrán...');
+    } else {
+        refreshIcon.classList.add('loaded');
+    }
+}
+
+//////////////////////////////
+
+/// HEAVY LOADING (FASTER) ///
+
+async function hl_initialFunction() {
+  proverbList = await hl_loadProverbList();
+  await hl_newProverb();
+}
+
+async function hl_loadProverbList() {
+  setRefreshIconLoading(true);
+  var result = await getProverbList();
+  setRefreshIconLoading(false);
+  return result;
+}
+
+async function hl_newProverb() {
+  if (proverbList.length === 0) return;
+  selectedId = proverbList[Math.floor(Math.random() * proverbList.length)].id;
+  firstIndex = undefined;
+  secondIndex = undefined;
+  setRefreshIconLoading(true);
+  await hl_displayProverb(proverbList[selectedId], undefined, undefined);
+  setRefreshIconLoading(false);
+}
+
+async function hl_shuffleProverb() {
+  const maxrange = 1000
+
+  if (proverbList.length < 2) {
+    console.log("El array debe tener al menos 2 elementos.");
+    return;
+  }
+
+  let firstIndex = selectedId;
+  let secondIndex;
+
+  do {
+    secondIndex = Math.floor(Math.random() * proverbList.length);
+  } while (secondIndex === firstIndex);
+
+  var first;
+  var second;
+
+  switch(Math.floor(Math.random() * 2)) {
+    case 0:
+      first = (firstIndex !== undefined) ? proverbList[firstIndex] : 0;
+      second = (secondIndex !== undefined) ? proverbList[secondIndex] : 0;
+      break;
+    case 1:
+      first = (secondIndex !== undefined) ? proverbList[secondIndex] : 0;
+      second = (firstIndex !== undefined) ? proverbList[firstIndex] : 0;
+      break;
+  }
+
+  setRefreshIconLoading(true);
+  await hl_displayProverb(proverbList[selectedId], first, second);
+  cleanMeaningHTML();
+  setRefreshIconLoading(false);
+}
+
+async function hl_totalShuffle() {
+  const maxrange = 1000
+
+  if (proverbList.length < 2) {
+    console.log("El array debe tener al menos 2 elementos.");
+    return;
+  }
+
+  // Elegir dos refranes distintos
+  selectedId = Math.floor(Math.random() * proverbList.length);
+  firstIndex = selectedId;
+  secondIndex;
+
+  do {
+    secondIndex = Math.floor(Math.random() * proverbList.length);
+  } while (secondIndex === firstIndex);
+
+  var first;
+  var second;
+
+  switch(Math.floor(Math.random() * 2)) {
+    case 0:
+      first = (firstIndex !== undefined) ? proverbList[firstIndex] : 0;
+      second = (secondIndex !== undefined) ? proverbList[secondIndex] : 0;
+      break;
+    case 1:
+      first = (secondIndex !== undefined) ? proverbList[secondIndex] : 0;
+      second = (firstIndex !== undefined) ? proverbList[firstIndex] : 0;
+      break;
+  }
+
+  setRefreshIconLoading(true);
+  await hl_displayProverb(proverbList[selectedId], first, second);
+  cleanMeaningHTML();
+  setRefreshIconLoading(false);
+}
+
+async function hl_displayProverb(selected, first, second) {
+  if (first === undefined || second === undefined) {
+    document.getElementById('proverb').textContent = `${selected.first_part} ${selected.second_part}`;
+    buildMeaningHTML(selected.meaning);
+  } else {
+    document.getElementById('proverb').textContent = `${first.first_part} ${second.second_part}`;
+    cleanMeaningHTML();
+  }
+}
+
+function cleanMeaningHTML() {
+    const meaningList = document.getElementById('meaning-list');
+    meaningList.replaceChildren();
+}
+
+function buildMeaningHTML(meaning) {
+    const meaningList = document.getElementById('meaning-list');
+
+    meaningList.replaceChildren();
+
+    const dl = document.createElement('dl');
+    const dt = document.createElement('dt');
+    const dd = document.createElement('dd');
+
+    dt.textContent = meaning;
+    dd.textContent = ' - A Refrán Revuelto';
+
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+    meaningList.appendChild(dl);
+}
+
+async function loadMeaning(id) {
+    if (!isNaN(id)) {
+        if (id < 1000) {
+            var proverb = await getProverbById(id);
+            return proverb.meaning;
+        }
+    } else {
+        return undefined;
+    }
+}
+
+//////////////////////////////
+
+// LISTENERS //
+
+document.addEventListener('DOMContentLoaded', function() {
+    const accordion = document.querySelector('.accordion');
+    const header = accordion.querySelector('.accordion-header');
+    const icon = header.querySelector('.accordion-icon');
+
+    header.addEventListener('click', function() {
+        const isActive = accordion.classList.toggle('active');
+    });
+});
+
 // Iniciar al cargar la página
-window.onload = initialFunction;
+window.onload = hl_initialFunction;
